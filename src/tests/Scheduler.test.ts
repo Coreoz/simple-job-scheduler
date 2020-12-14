@@ -23,6 +23,7 @@ describe('Scheduler tests', () => {
   });
 
   it('verify that once the job is stopped, the runnable function is not called anymore', async () => {
+    // eslint-disable-next-line no-return-assign
     const job = scheduler.schedule('test', () => executionCount += 1, 5);
     await waitTimeout(50);
     job.cancel();
