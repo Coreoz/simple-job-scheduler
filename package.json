@@ -13,9 +13,9 @@
     "job-scheduler"
   ],
   "scripts": {
-    "build": "npm run ttsc:cjs && npm run ttsc:esm",
-    "ttsc:cjs": "ttsc --module commonjs --outDir build/cjs -p tsconfig.json",
-    "ttsc:esm": "ttsc --module esnext --outDir build/esm -p tsconfig.json",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "ttsc --module commonjs --outDir build/cjs -p tsconfig.json",
+    "build:esm": "ttsc --module esnext --outDir build/esm -p tsconfig.json",
     "clean": "rm -rf build",
     "lint": "tsc --noEmit --outDir build/esm -p tsconfig.json && eslint src --ext .ts",
     "test": "mocha -r ts-node/register 'src/tests/**/*.ts'",
