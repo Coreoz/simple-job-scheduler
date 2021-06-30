@@ -22,7 +22,7 @@ export class Job {
       this.runnable(this);
       this.executionsCount += 1;
     } catch (e) {
-      logger.error(`An error occurred while executing the job ${this.name}`, e);
+      logger.error(`An error occurred while executing the job "${this.name}"`, e);
     }
   }
 
@@ -36,9 +36,10 @@ export class Job {
 
   cancel(): boolean {
     if (this.isCancelledState) {
-      logger.warn(`Trying to cancel an already cancelled job named ${this.name}`);
+      logger.warn(`Trying to cancel an already cancelled job named "${this.name}"`);
       return false;
     }
+    logger.info(`Cancelling job "${this.name}" after ${this.executionsCount} executions.`);
     this.isCancelledState = true;
     return this.cancelHandle();
   }

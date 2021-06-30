@@ -18,10 +18,10 @@ export class Scheduler {
   schedule(jobName: string, runnable: (job?: Job) => void, intervalInMillis: number): Job {
     const existingJob = this.indexedJobsByName.get(jobName);
     if (existingJob !== undefined) {
-      logger.warn(`There is already a job named ${jobName} running, the new job will not be scheduled.`);
+      logger.warn(`There is already a job named "${jobName}" running, the new job will not be scheduled.`);
       return existingJob.job;
     }
-    logger.info(`Scheduling job ${jobName} that is running every ${intervalInMillis}ms.`);
+    logger.info(`Scheduling job "${jobName}" that is running every ${intervalInMillis}ms.`);
     const newJob = new Job(jobName, runnable, intervalInMillis, () => this.cancelInternal(jobName));
     const intervalId = setInterval(() => newJob.execute(), intervalInMillis);
     this.indexedJobsByName.set(jobName, { job: newJob, intervalId });
@@ -31,10 +31,9 @@ export class Scheduler {
   cancel(jobName: string): boolean {
     const existingJob = this.indexedJobsByName.get(jobName);
     if (existingJob === undefined) {
-      logger.warn(`Trying to cancel job ${jobName}, but it does not exist.`);
+      logger.warn(`Trying to cancel job "${jobName}", but it does not exist.`);
       return false;
     }
-    logger.info(`Cancelling job ${jobName} after ${existingJob.job.getExecutionsCount()} executions.`);
 
     return existingJob.job.cancel();
   }
@@ -50,7 +49,7 @@ export class Scheduler {
   private cancelInternal(jobName: string): boolean {
     const existingJob = this.indexedJobsByName.get(jobName);
     if (existingJob === undefined) {
-      logger.warn(`Trying to cancel job ${jobName}, but it does not exist.`);
+      logger.warn(`Trying to cancel job "${jobName}", but it does not exist.`);
       return false;
     }
 
