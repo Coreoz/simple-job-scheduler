@@ -21,3 +21,8 @@ Have you ever inadvertently launched multiple times the same job? Do you ever wo
 Simple Job Scheduler tries to address these issues:
 - If the same running job is scheduled twice or more, only the first scheduling time will be taken into account (a job is identified by its name)
 - The method `scheduler.runningJobs()` returns all the running jobs
+
+Release process
+---------------
+1. run `npm login`
+2. run `npm run release` <= yarn **must not** be used

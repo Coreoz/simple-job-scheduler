@@ -21,6 +21,7 @@ export class Scheduler {
       logger.warn(`There is already a job named ${jobName} running, the new job will not be scheduled.`);
       return existingJob.job;
     }
+    logger.info(`Scheduling job ${jobName} that is running every ${intervalInMillis}ms.`);
     const newJob = new Job(jobName, runnable, intervalInMillis, () => this.cancelInternal(jobName));
     const intervalId = setInterval(() => newJob.execute(), intervalInMillis);
     this.indexedJobsByName.set(jobName, { job: newJob, intervalId });
@@ -33,6 +34,7 @@ export class Scheduler {
       logger.warn(`Trying to cancel job ${jobName}, but it does not exist.`);
       return false;
     }
+    logger.info(`Cancelling job ${jobName} after ${existingJob.job.getExecutionsCount()} executions.`);
 
     return existingJob.job.cancel();
   }
