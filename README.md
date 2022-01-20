@@ -3,6 +3,18 @@ Simple Job Scheduler
 This is a simple JavaScript scheduling system written in TypeScript.
 It is a small wrapper around the `setInterval` JavaScript function.
 
+Installation
+------------
+Using NPM:
+```
+npm install simple-job-scheduler
+```
+
+Using Yarn:
+```
+yarn add simple-job-scheduler
+```
+
 Usage
 -----
 ```typescript
