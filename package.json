@@ -13,13 +13,15 @@
     "job-scheduler"
   ],
   "scripts": {
-    "build": "npm run build:cjs && npm run build:esm",
-    "build:cjs": "ttsc --module commonjs --outDir build/cjs -p tsconfig.json",
-    "build:esm": "ttsc --module esnext --outDir build/esm -p tsconfig.json",
-    "clean": "rm -rf build",
-    "lint": "tsc --noEmit --outDir build/esm -p tsconfig.json && eslint src --ext .ts",
+    "build": "npm run build:cjs && npm run build:esm && npm run build:types",
+    "build:cjs": "swc src --config-file .swcrc -C module.type=commonjs --out-dir build/cjs --strip-leading-paths --ignore \"**/tests/**\"",
+    "build:esm": "swc src --config-file .swcrc -C module.type=es6 --out-dir build/esm --strip-leading-paths --ignore \"**/tests/**\"",
+    "build:types": "tsc -p tsconfig.build.json",
+    "clean": "node -e \"require('node:fs').rmSync('build',{recursive:true,force:true})\"",
+    "lint": "tsc --noEmit -p tsconfig.json && eslint src --ext .ts",
     "test": "mocha -r ts-node/register 'src/tests/**/*.ts'",
-    "prepare-release": "npm run clean && npm run lint && npm run test && npm run build",
+    "test:build": "mocha 'tests/package/**/*.cjs'",
+    "prepare-release": "npm run clean && npm run lint && npm run test && npm run build && npm run test:build",
     "release": "release-it"
   },
   "release-it": {
@@ -39,6 +41,8 @@
     "simple-logging-system": "^1.0.0"
   },
   "devDependencies": {
+    "@swc/cli": "^0.8.1",
+    "@swc/core": "^1.16.18",
     "@types/chai": "^4.2.14",
     "@types/mocha": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
@@ -50,10 +54,10 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.21.5",
     "mocha": "^8.2.1",
+    "plume-ts-di": "^1.2.4",
     "release-it": "^14.2.2",
+    "swc-class-decorator-plugin": "^1.2.0",
     "ts-node": "^9.0.0",
-    "ts-transformer-classname": "^1.0.0",
-    "ttypescript": "^1.5.12",
     "typedoc": "^0.19.0",
     "typescript": "^4.0.2"
   },
