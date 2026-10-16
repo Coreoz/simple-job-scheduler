@@ -1,10 +1,14 @@
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
+import { createRequire } from 'node:module';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { describe, it } from 'vitest';
 
-const { Injector } = require('plume-ts-di');
+const require = createRequire(import.meta.url);
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
-const packageRoot = path.resolve(__dirname, '..', '..');
+const packageRoot = path.resolve(currentDir, '..', '..');
 const cjsEntry = path.join(packageRoot, 'build', 'cjs', 'index.js');
 const esmEntry = path.join(packageRoot, 'build', 'esm', 'index.js');
 const typesEntry = path.join(packageRoot, 'build', 'esm', 'index.d.ts');
@@ -33,12 +37,13 @@ describe('Built package consumption', () => {
 
   it('resolves a Scheduler instance through an Injector without a "Cannot find type name" warning', () => {
     const { Scheduler } = require(cjsEntry);
-    const warnings = [];
+    const warnings: string[] = [];
     const originalWarn = console.warn;
-    console.warn = (...args) => {
+    console.warn = (...args: unknown[]) => {
       warnings.push(args.join(' '));
     };
     try {
+      const { Injector } = require('plume-ts-di');
       const injector = new Injector();
       injector.registerSingleton(Scheduler);
       const instance = injector.getInstance(Scheduler);
