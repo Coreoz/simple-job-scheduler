@@ -1,4 +1,4 @@
-# Workflow CI : lint, tests et build (Node.js / npm).
+# Workflow CI : lint, tests et build (Node.js / Yarn).
 name: Node CI
 
 on:
@@ -14,8 +14,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          # Pas de cache : le dépôt ne fournit pas de package-lock.json (cache npm indisponible).
+      - name: Enable Corepack
+        run: corepack enable
       - name: Install dependencies
-        run: npm install
+        run: yarn install --immutable
       - name: Lint, test and build
-        run: npm run prepare-release
+        run: yarn prepare-release
